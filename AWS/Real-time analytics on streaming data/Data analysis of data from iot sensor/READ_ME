@@ -1,0 +1,47 @@
+Architecture:
+EC2(python script for temperature sensor iot data) ----> Kinesis stream ---->Kinesis Analysis(anomaly detection)
+---->kinesis firehose----->Elastic search domain ----> Kibana Visualization
+----------------------------------------------------------------------------------------------------------------------------
+intallations:
+1) putty
+2)boto
+3)awscliv2
+----------------------------------------------------------------------------------------------------------------------------
+STEPS:
+1)Create Kinesis stream
+2)Create Kinesis Firehose that sends data to opensearch(opensearch can be created from cli of ec2 instance)
+3)Launch Linux EC2 instance and use putty to access cli of linux instance
+4) Run the provided python program(temperature.py) to generate data from iot temperature sensor and stop after a while
+5)Create Kinesis Analytics Application
+    - Configure Source, Real-Time Analytics with sql code provided, Destination
+6)create index pattern in kibana, open dashboard
+7)Visualize data
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EC2 linux instance
+-------------------
+
+aws configure
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+
+sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+
+
+4)sudo yum -y install python-pip
+5)sudo pip install boto3
+6)sudo pip install testdata
+------------------------------------------------------------------------------------
+Creating opensearch domain
+
+/usr/local/bin/aws opensearch create-domain --domain-name my-transcribe-test
+ --engine-version OpenSearch_1.0 --cluster-config  InstanceType=t2.medium.search,InstanceCount=1
+ --ebs-options EBSEnabled=true,VolumeType=standard,VolumeSize=10 --access-policies
+ '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":"arn:aws:iam::992833567489:root"},
+"Action":"es:*","Resource":"arn:aws:es:us-west-2:992833567489:domain/my-transcribe-test/*"}]}' --region us-east-1
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------
+
