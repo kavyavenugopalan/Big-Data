@@ -1,3 +1,10 @@
+********************************************************************************************************************************************************************************
+
+All steps are discribed in detail with screenshots in the 'Data Analysis of Temperature Data From Iot Sensor.docx'
+
+********************************************************************************************************************************************************************************
+
+
 Architecture:
 EC2(python script for temperature sensor iot data) ----> Kinesis stream ---->Kinesis Analysis(anomaly detection)
 ---->kinesis firehose----->Elastic search domain ----> Kibana Visualization
